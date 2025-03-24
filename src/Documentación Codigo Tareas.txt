@@ -1,0 +1,105 @@
+### Documentación Codigo JSX
+
+---
+
+   **import React, { useState } from 'react';**  
+   **import:**Importar módulos, componentes, funciones u objetos desde otros archivos.  
+   **React:** Biblioteca central de React. Se importa para usar sus funcionalidades dentro del componente.  
+   **{ useState }:** useState es un hook de React que te permite manejar el estado dentro de componentes funcionales. En lugar de usar clases, este hook simplifica la forma de manejar el estado de un componente.  
+   **from 'react':** Indica de dónde se está importando el módulo, en este caso, desde la biblioteca react.
+
+   **function App() {**  
+   **function:** Palabra clave de JavaScript usada para declarar una función. Esta es una función tradicional.  
+   **App:** Es el nombre de la función, en este caso es el componente funcional de React que será renderizado.  
+   **():** Paréntesis que definen los parámetros de la función. En este caso, no se están pasando parámetros al componente App.
+
+   **const [tasks, setTasks] = useState([]);**  
+   **const:** Palabra clave de JavaScript usada para declarar una constante, lo que significa que el valor de esta variable no puede ser reasignado.  
+   **[tasks, setTasks]:** Desestructuración de arreglo. useState devuelve un arreglo con dos elementos:  
+   **tasks:** El estado que contiene las tareas.  
+   **setTasks:** La función que se usa para actualizar el estado tasks.  
+   **useState([]):** El hook useState devuelve un arreglo. Se le pasa el valor inicial, que es un arreglo vacío []. Esto establece que inicialmente no hay tareas.
+
+   **const [newTask, setNewTask] = useState('');**  
+   **newTask:** Es una variable de estado que guarda el texto de la nueva tarea que el usuario quiere agregar.  
+   **setNewTask:** Es la función que se utiliza para actualizar el valor de newTask en el estado.  
+   **useState(''):** El valor inicial de newTask es una cadena vacía '', lo que indica que el campo de tarea está vacío inicialmente.
+
+   **const [filter, setFilter] = useState('');**  
+   **filter:** Este estado almacena el texto ingresado por el usuario para filtrar las tareas.  
+   **setFilter:** Es la función para actualizar el estado del filtro.  
+   **useState(''):** Inicializa el estado filter con una cadena vacía '', lo que significa que inicialmente no hay filtro aplicado.
+
+   **const addTask = () => {**  
+   **addTask:** Declaración de una función de flecha (arrow function). La función no recibe parámetros y será utilizada para agregar nuevas tareas.
+
+   **if (newTask.trim()) {**  
+   **if:** Condicional que ejecuta el bloque de código solo si la condición es verdadera.  
+   **newTask.trim():**  
+   **trim():** Método de JavaScript que elimina los espacios en blanco al principio y al final de la cadena.  
+   Si el valor de newTask es solo espacios en blanco, entonces newTask.trim() se convierte en una cadena vacía, lo que hace que la condición if sea falsa.
+
+   **setTasks([...tasks, { id: Date.now(), text: newTask }]);**  
+   **setTasks:** Función que actualiza el estado de las tareas. Al llamarla, React vuelve a renderizar el componente con las nuevas tareas.  
+   **[...tasks, { id: Date.now(), text: newTask }]:**  
+   **...tasks:** El operador de propagación (...) crea una copia de todas las tareas existentes.  
+   **{ id: Date.now(), text: newTask }:** Crea un nuevo objeto que representa la nueva tarea.  
+   **id: Date.now():** Usamos la función Date.now() para obtener un identificador único basado en el tiempo actual (en milisegundos). Esto garantiza que cada tarea tenga un id único.  
+   **text: newTask:** La propiedad text almacena el contenido de la nueva tarea que el usuario ha ingresado.
+
+   **setNewTask('');**  
+   **setNewTask(''):** Después de agregar la tarea, este comando limpia el valor del campo de entrada, reseteando el estado de newTask a una cadena vacía.
+
+   **const deleteTask = (id) => {**  
+   **deleteTask:** Función que recibe un id y elimina la tarea correspondiente de la lista de tareas.
+
+   **setTasks(tasks.filter((task) => task.id !== id));**  
+   **tasks.filter():** El método .filter() de JavaScript crea un nuevo arreglo con todas las tareas cuyo id no sea igual al proporcionado.  
+   **(task) => task.id !== id:** Esta es una función de flecha (arrow function).  
+   **task:** Representa cada tarea individual en el arreglo tasks.  
+   **task.id !== id:** La comparación verifica si el id de la tarea es diferente del id proporcionado en el parámetro. Si es diferente, la tarea se mantiene en el nuevo arreglo, de lo contrario, se filtra (eliminando la tarea).
+
+   **const filteredTasks = tasks.filter((task) => task.text.toLowerCase().includes(filter.toLowerCase()));**  
+   **tasks.filter():** Filtra las tareas basadas en un criterio.  
+   **task.text.toLowerCase():** Convierte el texto de cada tarea a minúsculas para asegurar que la búsqueda sea insensible a mayúsculas y minúsculas.  
+   **filter.toLowerCase():** Convierte el valor del filtro (filter) a minúsculas.  
+   **.includes():** Verifica si el texto de la tarea contiene el texto del filtro. Si es así, la tarea se incluirá en el arreglo filtrado.
+
+   **return (**
+   **return:** Se usa para devolver el JSX, que es lo que se renderizará en el navegador. Todo lo que esté dentro de este bloque será mostrado como contenido HTML.
+
+   **<h1>CRUD de Tareas</h1>**
+   **<h1>:** Etiqueta HTML que define un encabezado de nivel 1. Se usa para definir el título principal de la página.
+
+   **<input type="text" value={newTask} onChange={(e) => setNewTask(e.target.value)} placeholder="Nueva tarea" />**
+   **<input type="text">:** Define un campo de entrada de texto.  
+   **value={newTask}:** El valor del campo de entrada está vinculado al estado newTask. Esto asegura que el valor mostrado en el campo de entrada sea siempre el mismo que el valor del estado.  
+   **onChange={(e) => setNewTask(e.target.value)}:**  
+   **onChange:** Evento que se dispara cada vez que el usuario escribe algo en el campo de entrada.  
+   **(e) => setNewTask(e.target.value):** (e) es el evento generado por el cambio en el campo de entrada.  
+   **e.target.value:** e.target hace referencia al elemento del DOM (en este caso el campo de entrada). .value es el valor actual del campo de entrada, que se utiliza para actualizar el estado newTask mediante la función setNewTask.  
+   **placeholder="Nueva tarea":** El texto "Nueva tarea" se muestra como un marco de referencia dentro del campo de entrada cuando está vacío.
+
+   **<button onClick={addTask}>Agregar Tarea</button>**
+   **onClick={addTask}:** El evento onClick se dispara cuando el usuario hace clic en el botón. Ejecuta la función addTask.  
+   **Agregar Tarea:** El texto que aparece dentro del botón.
+
+   **{filteredTasks.map((task) => (**
+   **filteredTasks.map():** Método que recorre el arreglo filteredTasks..map() crea un nuevo arreglo de JSX, iterando sobre las tareas y generando un elemento para cada una.  
+   **task:** Variable que representa cada tarea individual dentro del arreglo filteredTasks.
+
+   **<li key={task.id}>**
+   **<li>:** Etiqueta HTML para representar un ítem dentro de una lista.  
+   **key={task.id}:** key es un atributo necesario en React cuando se mapean elementos en una lista. Proporciona una clave única para cada elemento en el arreglo. Esto ayuda a React a identificar los elementos de manera más eficiente durante las actualizaciones.
+
+   **{task.text}**
+   **{task.text}:** Muestra el texto de la tarea en cada elemento de la lista.
+
+   **<button onClick={() => deleteTask(task.id)}>Eliminar</button>**
+   **onClick={() => deleteTask(task.id)}:** Se ejecuta la función deleteTask, pasando el id de la tarea, cuando se hace clic en el botón "Eliminar".
+
+   **export default App;**
+   **export:** Palabra clave que permite exportar el componente App para que pueda ser importado y utilizado en otros archivos.  
+   **default:** Indica que esta es la exportación predeterminada del archivo, lo que significa que cuando se importe el archivo, se obtendrá este componente automáticamente.  
+   **App:** Es el nombre del componente que se está exportando.
+

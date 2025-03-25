@@ -51,6 +51,11 @@ h1 {
   background-color: #45a049;
 }
 
+#editing {
+  background-color: #2d5ec1;
+  border: none;
+}
+
 .filter-input input {
   width: 100%;
   padding: 10px;
@@ -99,7 +104,7 @@ h1 {
 }
 
 #update {
-  background-color: #4641a3;
+  background-color: #2d5ec1;
 }
 
 .task-item button:hover {

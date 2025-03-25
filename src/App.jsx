@@ -74,7 +74,8 @@ function App() {
               placeholder="Descripción de la tarea"
               required
             />
-            <button onClick={addOrUpdateTask}>
+            <button onClick={addOrUpdateTask} id={isEditing ? 'editing' : ''}
+            >
               {isEditing ? 'Actualizar Tarea' : 'Agregar Tarea'}
             </button>
           </div>

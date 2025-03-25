@@ -66,7 +66,6 @@ function App() {
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              placeholder="Fecha Limite"
               required
             />
             <textarea

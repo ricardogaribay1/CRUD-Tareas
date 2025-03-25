@@ -95,7 +95,7 @@ function App() {
             {filteredTasks.map((task) => (
               <li key={task.id} className="task-item">
                 <h3>{task.text}</h3>
-                <p><strong>Fecha:</strong> {task.dueDate}</p>
+                <p><strong>Fecha Limite:</strong> {task.dueDate}</p>
                 <p><strong>Descripción:</strong> {task.description}</p>
                 <div className="task-buttons">
                   <button onClick={() => editTaskHandler(task)}>Actualizar Tarea</button>

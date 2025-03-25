@@ -11,6 +11,7 @@ h1 {
   color: white;
   padding: 15px;
   margin: 0;
+  border-radius: 10px;
 }
 
 /* Contenedor principal */
@@ -33,6 +34,7 @@ h1 {
   margin: 10px 0;
   padding: 10px;
   font-size: 16px;
+  border-radius: 10px;
 }
 
 .task-input button {
@@ -54,6 +56,7 @@ h1 {
   padding: 10px;
   font-size: 16px;
   margin-top: 20px;
+  border-radius: 10px;
 }
 
 /* Estilo para la columna derecha */
@@ -87,7 +90,7 @@ h1 {
 }
 
 .task-item button {
-  background-color: #FF6347;
+  background-color: #f01c1c;
   color: white;
   padding: 5px 10px;
   border: none;
@@ -96,7 +99,7 @@ h1 {
 }
 
 .task-item button:hover {
-  background-color: #ff2e1f;
+  background-color: #f92929;
 }
 
 .task-item button:nth-child(1) {

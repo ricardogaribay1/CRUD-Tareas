@@ -59,7 +59,7 @@ function App() {
               type="text"
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
-              placeholder="Nombre de la tarea"
+              placeholder="Nombre Tarea"
               required
             />
             <input

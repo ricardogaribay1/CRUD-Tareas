@@ -1,147 +1,105 @@
-/* Estilos globales */
-* {
+/* Estilos básicos para la app */
+.app {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  text-align: center;
+}
+
+h1 {
+  background-color: #4641a3;
+  color: white;
+  padding: 15px;
+  margin: 0;
 }
 
 /* Contenedor principal */
-div {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
-  padding: 30px;
-  max-width: 600px;
-  width: 100%;
-  margin: 40px auto;
-  text-align: center;
-  transition: box-shadow 0.3s ease-in-out;
-}
-
-div:hover {
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); 
-}
-
-/* Título */
-h1 {
-  font-size: 2.5rem;
-  color: #333;
-  font-weight: 600;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-}
-
-/* Formulario de agregar tarea */
-input[type="text"] {
-  width: 70%;
-  padding: 12px 15px;
-  margin-right: 15px;
-  border: 1px solid #d1d8e0;
-  border-radius: 6px;
-  font-size: 16px;
-  outline: none;
-  background-color: #f9f9f9;
-  color: #333;
-  transition: all 0.3s ease-in-out;
-}
-
-input[type="text"]:focus {
-  border-color: #4e73df;
-  background-color: #ffffff;
-}
-
-/* Botón agregar tarea */
-button {
-  padding: 12px 20px;
-  background-color: #4e73df;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-button:hover {
-  background-color: #2e59d9; /* Cambio de color suave al hacer hover */
-  transform: scale(1.05);
-}
-
-/* Estilo para el filtro de tareas */
-input[type="text"]:nth-of-type(2) {
-  width: 80%;
-  margin-top: 20px;
-  padding: 12px 15px;
-  border: 1px solid #d1d8e0;
-  border-radius: 6px;
-  font-size: 16px;
-  outline: none;
-  background-color: #f9f9f9;
-}
-
-input[type="text"]:nth-of-type(2):focus {
-  border-color: #4e73df; 
-  background-color: #ffffff;
-}
-
-/* Lista de tareas */
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 30px;
-}
-
-/* Tarea individual */
-li {
+.container {
   display: flex;
   justify-content: space-between;
-  padding: 15px;
+  margin: 20px;
+}
+
+/* Estilo para la columna izquierda */
+.left-column {
+  width: 45%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.task-input input,
+.task-input textarea {
+  width: 100%;
   margin: 10px 0;
-  background-color: #f0f3f7;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease-in-out;
+  padding: 10px;
+  font-size: 16px;
 }
 
-li:hover {
-  transform: translateY(-5px); 
-}
-
-/* Botón eliminar tarea */
-li button {
-  background-color: #e74a3b;
-  padding: 8px 12px;
+.task-input button {
+  width: 105%;
+  padding: 10px;
+  background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
+}
+
+.task-input button:hover {
+  background-color: #45a049;
+}
+
+.filter-input input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+/* Estilo para la columna derecha */
+.right-column {
+  width: 45%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.right-column ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.task-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.task-item h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.task-item p {
   font-size: 14px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #555;
 }
 
-li button:hover {
-  background-color: #c0392b; /* Cambio de color en hover */
-  transform: scale(1.05);
+.task-item button {
+  background-color: #FF6347;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  div {
-    padding: 20px;
-  }
-
-  input[type="text"] {
-    width: 90%;
-    margin-right: 0;
-  }
-
-  button {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  input[type="text"]:nth-of-type(2) {
-    width: 90%;
-  }
+.task-item button:hover {
+  background-color: #ff2e1f;
 }
+
+.task-item button:nth-child(1) {
+  margin-right: 10px;
+}
+

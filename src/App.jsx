@@ -98,7 +98,7 @@ function App() {
                 <p><strong>Fecha Limite:</strong> {task.dueDate}</p>
                 <p><strong>Descripción:</strong> {task.description}</p>
                 <div className="task-buttons">
-                  <button onClick={() => editTaskHandler(task)}>Actualizar Tarea</button>
+                  <button id='update' onClick={() => editTaskHandler(task)}>Actualizar Tarea</button>
                   <button onClick={() => deleteTask(task.id)}>Eliminar</button>
                 </div>
               </li>

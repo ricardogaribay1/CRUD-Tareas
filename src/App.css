@@ -90,7 +90,7 @@ h1 {
 }
 
 .task-item button {
-  background-color: #f01c1c;
+  background-color: #e71111;
   color: white;
   padding: 5px 10px;
   border: none;
@@ -98,8 +98,12 @@ h1 {
   margin-top: 10px;
 }
 
+#update {
+  background-color: #4641a3;
+}
+
 .task-item button:hover {
-  background-color: #f92929;
+  background-color: #c90d0d;
 }
 
 .task-item button:nth-child(1) {

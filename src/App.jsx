@@ -1,4 +1,4 @@
-import React, { useState } from 'react';  // Importa React y el hook useState
+import React, { useState, useEffect } from 'react';  // Importa React y los hooks useState y useEffect
 import './App.css';  // Importa los estilos CSS (archivo 'App.css')
 
 function App() {
@@ -9,6 +9,22 @@ function App() {
   const [filter, setFilter] = useState('');  // Estado para manejar el filtro de búsqueda de tareas
   const [isEditing, setIsEditing] = useState(null);  // Estado para verificar si estamos editando una tarea
 
+  // useEffect para cargar las tareas desde el almacenamiento local cuando el componente se monta
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem('tasks'));  // Recupera las tareas guardadas del localStorage
+    if (storedTasks) {
+      setTasks(storedTasks);  // Si hay tareas almacenadas, las asignamos al estado 'tasks'
+    }
+  }, []);  // Este efecto solo se ejecuta una vez, cuando el componente se monta
+
+  // useEffect para guardar las tareas en el localStorage cada vez que el estado 'tasks' cambia
+  useEffect(() => {
+    // Solo actualizamos el localStorage si hay tareas que guardar
+    if (tasks.length > 0) {
+      localStorage.setItem('tasks', JSON.stringify(tasks));  // Guarda las tareas en el localStorage como una cadena JSON
+    }
+  }, [tasks]);  // Este efecto se ejecuta cada vez que el estado "task" se cambia
+
   // Función para agregar o actualizar una tarea
   const addOrUpdateTask = () => {
     if (!newTask.trim() || !description.trim() || !dueDate.trim()) {
@@ -17,21 +33,24 @@ function App() {
     }
 
     if (isEditing) {
+      // Si estamos editando una tarea, actualizamos su contenido
       setTasks(tasks.map(task =>
         task.id === isEditing ? { ...task, text: newTask, description, dueDate } : task
       ));
-      setIsEditing(null);
+      setIsEditing(null);  // Restablece el estado de edición
     } else {
+      // Si no estamos editando, agregamos una nueva tarea
       setTasks([...tasks, { id: Date.now(), text: newTask, description, dueDate }]);
     }
-    setNewTask('');
-    setDescription('');
-    setDueDate('');
+    setNewTask('');  // Limpia el campo de la tarea
+    setDescription('');  // Limpia el campo de la descripción
+    setDueDate('');  // Limpia el campo de la fecha
   };
 
   // Función para eliminar una tarea
   const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));  // Filtra las tareas eliminando la que tenga el id igual al pasado
+    const updatedTasks = tasks.filter((task) => task.id !== id);  // Filtra las tareas eliminando la que tenga el id pasado
+    setTasks(updatedTasks);  // Actualiza el estado con las tareas filtradas
   };
 
   // Función para editar una tarea
@@ -39,7 +58,7 @@ function App() {
     setNewTask(task.text);
     setDescription(task.description);
     setDueDate(task.dueDate);
-    setIsEditing(task.id);
+    setIsEditing(task.id);  // Establece el id de la tarea que estamos editando
   };
 
   // Filtrar las tareas por el texto ingresado en el filtro
@@ -49,7 +68,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>CRUD de Tareas</h1>
+      <h1>Lista de Tareas</h1>
 
       <div className="container">
         {/* Parte izquierda: agregar tarea */}
@@ -74,8 +93,7 @@ function App() {
               placeholder="Descripción de la tarea"
               required
             />
-            <button onClick={addOrUpdateTask} id={isEditing ? 'editing' : ''}
-            >
+            <button onClick={addOrUpdateTask} id={isEditing ? 'editing' : ''}>
               {isEditing ? 'Actualizar Tarea' : 'Agregar Tarea'}
             </button>
           </div>
@@ -112,5 +130,8 @@ function App() {
 }
 
 export default App;
+
+
+
 
 

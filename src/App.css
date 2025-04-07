@@ -29,7 +29,8 @@ h1 {
 }
 
 .task-input input,
-.task-input textarea {
+.task-input textarea,
+.filter-input input {
   width: 100%;
   margin: 10px 0;
   padding: 10px;
@@ -37,18 +38,26 @@ h1 {
   border-radius: 10px;
 }
 
-.task-input button {
-  width: 105%;
+/* Separación uniforme entre botones */
+button {
+  width: 100%;
   padding: 10px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
+  margin-top: 10px; /* Unifica la separación entre botones */
+  border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
 }
 
-.task-input button:hover {
-  background-color: #45a049;
+button:hover {
+  opacity: 0.8;
+}
+
+/* Estilo para los botones */
+.task-input button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  width: 106%;
 }
 
 #editing {
@@ -56,12 +65,30 @@ h1 {
   border: none;
 }
 
-.filter-input input {
-  width: 100%;
+.full-width-button {
+  background-color: #4CAF50; /* Same green as the other buttons */
+  color: white;
+  width: 106%;
+}
+
+.full-width-button:hover {
+  background-color: #45a049;
+}
+
+/* Botones de "Estatus", "Categoría", "Prioridad" */
+.select-input select {
+  width: 106%;
   padding: 10px;
   font-size: 16px;
-  margin-top: 20px;
+  margin-top: 10px;
   border-radius: 10px;
+  background-color: #4641a3;
+  color: white;
+  border: none;
+}
+
+.select-input select:hover {
+  background-color: #3b3697;
 }
 
 /* Estilo para la columna derecha */

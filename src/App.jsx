@@ -1,77 +1,101 @@
-import React, { useState, useEffect } from 'react';  // Importa React y los hooks useState y useEffect
-import './App.css';  // Importa los estilos CSS (archivo 'App.css')
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import 'react-date-range/dist/styles.css'; // Importa el estilo principal de react-date-range
+import 'react-date-range/dist/theme/default.css'; // Importa el tema predeterminado
+import { DateRangePicker } from 'react-date-range'; // Importa el componente DateRangePicker
 
 function App() {
-  const [tasks, setTasks] = useState([]);  // Estado para almacenar las tareas (inicialmente vacío)
-  const [newTask, setNewTask] = useState('');  // Estado para manejar el texto de la nueva tarea
-  const [description, setDescription] = useState('');  // Estado para manejar la descripción de la tarea
-  const [dueDate, setDueDate] = useState('');  // Estado para manejar la fecha de la tarea
-  const [filter, setFilter] = useState('');  // Estado para manejar el filtro de búsqueda de tareas
-  const [isEditing, setIsEditing] = useState(null);  // Estado para verificar si estamos editando una tarea
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState('');
+  const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [status, setStatus] = useState('');
+  const [category, setCategory] = useState('');
+  const [priority, setPriority] = useState('');
+  const [filter, setFilter] = useState('');
+  const [isEditing, setIsEditing] = useState(null);
+  const [showDateFilter, setShowDateFilter] = useState(false);
+  const [dateRange, setDateRange] = useState({ startDate: null, endDate: null });
 
-  // useEffect para cargar las tareas desde el almacenamiento local cuando el componente se monta
   useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem('tasks'));  // Recupera las tareas guardadas del localStorage
+    const storedTasks = JSON.parse(localStorage.getItem('tasks'));
     if (storedTasks) {
-      setTasks(storedTasks);  // Si hay tareas almacenadas, las asignamos al estado 'tasks'
+      setTasks(storedTasks);
     }
-  }, []);  // Este efecto solo se ejecuta una vez, cuando el componente se monta
+  }, []);
 
-  // useEffect para guardar las tareas en el localStorage cada vez que el estado 'tasks' cambia
   useEffect(() => {
-    // Solo actualizamos el localStorage si hay tareas que guardar
     if (tasks.length > 0) {
-      localStorage.setItem('tasks', JSON.stringify(tasks));  // Guarda las tareas en el localStorage como una cadena JSON
+      localStorage.setItem('tasks', JSON.stringify(tasks));
     }
-  }, [tasks]);  // Este efecto se ejecuta cada vez que el estado "task" se cambia
+  }, [tasks]);
 
-  // Función para agregar o actualizar una tarea
   const addOrUpdateTask = () => {
-    if (!newTask.trim() || !description.trim() || !dueDate.trim()) {
+    if (!newTask.trim() || !description.trim() || !dueDate.trim() || !status || !category || !priority) {
       alert("Por favor, completa todos los campos.");
       return;
     }
 
     if (isEditing) {
-      // Si estamos editando una tarea, actualizamos su contenido
       setTasks(tasks.map(task =>
-        task.id === isEditing ? { ...task, text: newTask, description, dueDate } : task
+        task.id === isEditing ? { ...task, text: newTask, description, dueDate, status, category, priority } : task
       ));
-      setIsEditing(null);  // Restablece el estado de edición
+      setIsEditing(null);
     } else {
-      // Si no estamos editando, agregamos una nueva tarea
-      setTasks([...tasks, { id: Date.now(), text: newTask, description, dueDate }]);
+      setTasks([...tasks, { id: Date.now(), text: newTask, description, dueDate, status, category, priority }]);
     }
-    setNewTask('');  // Limpia el campo de la tarea
-    setDescription('');  // Limpia el campo de la descripción
-    setDueDate('');  // Limpia el campo de la fecha
+    setNewTask('');
+    setDescription('');
+    setDueDate('');
+    setStatus('');
+    setCategory('');
+    setPriority('');
   };
 
-  // Función para eliminar una tarea
   const deleteTask = (id) => {
-    const updatedTasks = tasks.filter((task) => task.id !== id);  // Filtra las tareas eliminando la que tenga el id pasado
-    setTasks(updatedTasks);  // Actualiza el estado con las tareas filtradas
+    const updatedTasks = tasks.filter(task => task.id !== id);
+    setTasks(updatedTasks);
   };
 
-  // Función para editar una tarea
   const editTaskHandler = (task) => {
     setNewTask(task.text);
     setDescription(task.description);
     setDueDate(task.dueDate);
-    setIsEditing(task.id);  // Establece el id de la tarea que estamos editando
+    setStatus(task.status);
+    setCategory(task.category);
+    setPriority(task.priority);
+    setIsEditing(task.id);
   };
 
-  // Filtrar las tareas por el texto ingresado en el filtro
-  const filteredTasks = tasks.filter((task) =>
-    task.text.toLowerCase().includes(filter.toLowerCase())  // Convierte tanto el texto de la tarea como el filtro a minúsculas para hacer la comparación
-  );
+  const handleDateChange = (ranges) => {
+    const { selection } = ranges;
+    if (selection.startDate && selection.endDate) {
+      setDateRange({
+        startDate: selection.startDate,
+        endDate: selection.endDate,
+      });
+    }
+  };
+
+  const filteredTasks = tasks.filter((task) => {
+    const matchesText = task.text.toLowerCase().includes(filter.toLowerCase()) ||
+                        task.dueDate.includes(filter.toLowerCase()) ||
+                        task.status.toLowerCase().includes(filter.toLowerCase()) ||
+                        task.category.toLowerCase().includes(filter.toLowerCase()) ||
+                        task.priority.toLowerCase().includes(filter.toLowerCase());
+
+    const matchesDate = dateRange.startDate && dateRange.endDate
+      ? new Date(task.dueDate) >= dateRange.startDate && new Date(task.dueDate) <= dateRange.endDate
+      : true;
+
+    return matchesText && matchesDate;
+  });
 
   return (
     <div className="app">
       <h1>Lista de Tareas</h1>
 
       <div className="container">
-        {/* Parte izquierda: agregar tarea */}
         <div className="left-column">
           <div className="task-input">
             <input
@@ -93,6 +117,30 @@ function App() {
               placeholder="Descripción de la tarea"
               required
             />
+            <div className="select-input">
+              <select value={status} onChange={(e) => setStatus(e.target.value)} required>
+                <option value="">Selecciona Estatus</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="En Progreso">En Progreso</option>
+                <option value="Completada">Completada</option>
+              </select>
+            </div>
+            <div className="select-input">
+              <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+                <option value="">Selecciona Categoría</option>
+                <option value="Trabajo">Trabajo</option>
+                <option value="Personal">Personal</option>
+                <option value="Estudio">Estudio</option>
+              </select>
+            </div>
+            <div className="select-input">
+              <select value={priority} onChange={(e) => setPriority(e.target.value)} required>
+                <option value="">Selecciona Prioridad</option>
+                <option value="Alta">Alta</option>
+                <option value="Media">Media</option>
+                <option value="Baja">Baja</option>
+              </select>
+            </div>
             <button onClick={addOrUpdateTask} id={isEditing ? 'editing' : ''}>
               {isEditing ? 'Actualizar Tarea' : 'Agregar Tarea'}
             </button>
@@ -106,9 +154,32 @@ function App() {
               placeholder="Filtrar tareas"
             />
           </div>
+
+          <button className="full-width-button" onClick={() => setShowDateFilter(!showDateFilter)}>
+            {showDateFilter ? 'Cerrar Filtro de Fechas' : 'Filtrar por Fechas'}
+          </button>
+
+          {showDateFilter && (
+            <div className="date-picker-container">
+              <DateRangePicker
+                ranges={[{
+                  startDate: dateRange.startDate || new Date(),
+                  endDate: dateRange.endDate || new Date(),
+                  key: 'selection',
+                }]}
+                onChange={handleDateChange}
+                showSelectionPreview={false}
+                months={1}
+                rangeColors={['#3d91ff']}
+                moveRangeOnFirstSelection={false}
+                direction="horizontal"
+                retainEndDateOnFirstSelection={true}
+                minDate={new Date()}
+              />
+            </div>
+          )}
         </div>
 
-        {/* Parte derecha: mostrar tareas */}
         <div className="right-column">
           <ul>
             {filteredTasks.map((task) => (
@@ -116,6 +187,9 @@ function App() {
                 <h3>{task.text}</h3>
                 <p><strong>Fecha Limite:</strong> {task.dueDate}</p>
                 <p><strong>Descripción:</strong> {task.description}</p>
+                <p><strong>Estatus:</strong> {task.status}</p>
+                <p><strong>Categoría:</strong> {task.category}</p>
+                <p><strong>Prioridad:</strong> {task.priority}</p>
                 <div className="task-buttons">
                   <button id='update' onClick={() => editTaskHandler(task)}>Actualizar Tarea</button>
                   <button onClick={() => deleteTask(task.id)}>Eliminar</button>
@@ -130,6 +204,9 @@ function App() {
 }
 
 export default App;
+
+
+
 
 
 

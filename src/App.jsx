@@ -160,24 +160,26 @@ function App() {
           </button>
 
           {showDateFilter && (
-            <div className="date-picker-container">
-              <DateRangePicker
-                ranges={[{
-                  startDate: dateRange.startDate || new Date(),
-                  endDate: dateRange.endDate || new Date(),
-                  key: 'selection',
-                }]}
-                onChange={handleDateChange}
-                showSelectionPreview={false}
-                months={1}
-                rangeColors={['#3d91ff']}
-                moveRangeOnFirstSelection={false}
-                direction="horizontal"
-                retainEndDateOnFirstSelection={true}
-                minDate={new Date()}
-              />
-            </div>
-          )}
+  <div className="date-picker-container">
+    <div className="date-picker-wrapper">
+      <DateRangePicker
+        ranges={[{
+          startDate: dateRange.startDate || new Date(),
+          endDate: dateRange.endDate || new Date(),
+          key: 'selection',
+        }]}
+        onChange={handleDateChange}
+        showSelectionPreview={false}
+        months={1}
+        rangeColors={['#3d91ff']}
+        moveRangeOnFirstSelection={false}
+        direction="horizontal"
+        retainEndDateOnFirstSelection={true}
+        minDate={new Date()}
+      />
+    </div>
+  </div>
+)}
         </div>
 
         <div className="right-column">

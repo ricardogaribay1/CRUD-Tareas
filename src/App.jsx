@@ -167,15 +167,15 @@ function App() {
           startDate: dateRange.startDate || new Date(),
           endDate: dateRange.endDate || new Date(),
           key: 'selection',
-        }]}
+        }]} 
         onChange={handleDateChange}
-        showSelectionPreview={false}
+        // showSelectionPreview={false}
         months={1}
-        rangeColors={['#3d91ff']}
-        moveRangeOnFirstSelection={false}
+        // rangeColors={['#3d91ff']}
+        // moveRangeOnFirstSelection={false}
         direction="horizontal"
-        retainEndDateOnFirstSelection={true}
-        minDate={new Date()}
+        // retainEndDateOnFirstSelection={true}
+        // minDate={new Date()}
       />
     </div>
   </div>

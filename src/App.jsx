@@ -95,7 +95,7 @@ function App() {
       <div className="container">
         <div className="left-column">
           <button className="full-width-button" onClick={() => setShowModal(true)}>
-            Agregar Tarea
+          ➕ Agregar Tarea
           </button>
 
           <div className="filter-input">
@@ -103,7 +103,7 @@ function App() {
               type="text"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              placeholder="Filtrar tareas"
+              placeholder="🔍 Buscador"
             />
           </div>
 

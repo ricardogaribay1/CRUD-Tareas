@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import 'react-date-range/dist/styles.css'; // Importa el estilo principal de react-date-range
-import 'react-date-range/dist/theme/default.css'; // Importa el tema predeterminado
-import { DateRangePicker } from 'react-date-range'; // Importa el componente DateRangePicker
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { DateRangePicker } from 'react-date-range';
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    // Cargar tareas desde localStorage al iniciar
+    const storedTasks = localStorage.getItem('tasks');
+    return storedTasks ? JSON.parse(storedTasks) : [];
+  });
   const [newTask, setNewTask] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -16,18 +20,11 @@ function App() {
   const [isEditing, setIsEditing] = useState(null);
   const [showDateFilter, setShowDateFilter] = useState(false);
   const [dateRange, setDateRange] = useState({ startDate: null, endDate: null });
+  const [showModal, setShowModal] = useState(false);
 
+  // Guardar tareas en localStorage cada vez que cambien
   useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem('tasks'));
-    if (storedTasks) {
-      setTasks(storedTasks);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (tasks.length > 0) {
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
+    localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
   const addOrUpdateTask = () => {
@@ -50,6 +47,7 @@ function App() {
     setStatus('');
     setCategory('');
     setPriority('');
+    setShowModal(false);
   };
 
   const deleteTask = (id) => {
@@ -65,16 +63,15 @@ function App() {
     setCategory(task.category);
     setPriority(task.priority);
     setIsEditing(task.id);
+    setShowModal(true);
   };
 
   const handleDateChange = (ranges) => {
     const { selection } = ranges;
-    if (selection.startDate && selection.endDate) {
-      setDateRange({
-        startDate: selection.startDate,
-        endDate: selection.endDate,
-      });
-    }
+    setDateRange({
+      startDate: selection.startDate,
+      endDate: selection.endDate,
+    });
   };
 
   const filteredTasks = tasks.filter((task) => {
@@ -97,7 +94,66 @@ function App() {
 
       <div className="container">
         <div className="left-column">
-          <div className="task-input">
+          <button className="full-width-button" onClick={() => setShowModal(true)}>
+            Agregar Tarea
+          </button>
+
+          <div className="filter-input">
+            <input
+              type="text"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              placeholder="Filtrar tareas"
+            />
+          </div>
+
+          <button className="full-width-button" onClick={() => setShowDateFilter(!showDateFilter)}>
+            {showDateFilter ? 'Cerrar Filtro de Fechas' : 'Filtrar por Fechas'}
+          </button>
+
+          {showDateFilter && (
+            <div className="date-picker-container">
+              <div className="date-picker-wrapper">
+                <DateRangePicker
+                  ranges={[{
+                    startDate: dateRange.startDate || new Date(),
+                    endDate: dateRange.endDate || new Date(),
+                    key: 'selection',
+                  }]}
+                  onChange={handleDateChange}
+                  months={1}
+                  direction="horizontal"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="right-column">
+          {tasks.length === 0 && <p>No hay tareas disponibles.</p>}
+          <ul>
+            {filteredTasks.map((task) => (
+              <li key={task.id} className="task-item">
+                <h3>{task.text}</h3>
+                <p><strong>Fecha Limite:</strong> {task.dueDate}</p>
+                <p><strong>Descripción:</strong> {task.description}</p>
+                <p><strong>Estatus:</strong> {task.status}</p>
+                <p><strong>Categoría:</strong> {task.category}</p>
+                <p><strong>Prioridad:</strong> {task.priority}</p>
+                <div className="task-buttons">
+                  <button id='update' onClick={() => editTaskHandler(task)}>Actualizar Tarea</button>
+                  <button onClick={() => deleteTask(task.id)}>Eliminar</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>{isEditing ? 'Editar Tarea' : 'Agregar Tarea'}</h2>
             <input
               type="text"
               value={newTask}
@@ -141,72 +197,18 @@ function App() {
                 <option value="Baja">Baja</option>
               </select>
             </div>
-            <button onClick={addOrUpdateTask} id={isEditing ? 'editing' : ''}>
+            <button onClick={addOrUpdateTask}>
               {isEditing ? 'Actualizar Tarea' : 'Agregar Tarea'}
             </button>
+            <button className="close-button" onClick={() => setShowModal(false)}>Cerrar</button>
           </div>
-
-          <div className="filter-input">
-            <input
-              type="text"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              placeholder="Filtrar tareas"
-            />
-          </div>
-
-          <button className="full-width-button" onClick={() => setShowDateFilter(!showDateFilter)}>
-            {showDateFilter ? 'Cerrar Filtro de Fechas' : 'Filtrar por Fechas'}
-          </button>
-
-          {showDateFilter && (
-  <div className="date-picker-container">
-    <div className="date-picker-wrapper">
-      <DateRangePicker
-        ranges={[{
-          startDate: dateRange.startDate || new Date(),
-          endDate: dateRange.endDate || new Date(),
-          key: 'selection',
-        }]} 
-        onChange={handleDateChange}
-        // showSelectionPreview={false}
-        months={1}
-        // rangeColors={['#3d91ff']}
-        // moveRangeOnFirstSelection={false}
-        direction="horizontal"
-        // retainEndDateOnFirstSelection={true}
-        // minDate={new Date()}
-      />
-    </div>
-  </div>
-)}
         </div>
-
-        <div className="right-column">
-          <ul>
-            {filteredTasks.map((task) => (
-              <li key={task.id} className="task-item">
-                <h3>{task.text}</h3>
-                <p><strong>Fecha Limite:</strong> {task.dueDate}</p>
-                <p><strong>Descripción:</strong> {task.description}</p>
-                <p><strong>Estatus:</strong> {task.status}</p>
-                <p><strong>Categoría:</strong> {task.category}</p>
-                <p><strong>Prioridad:</strong> {task.priority}</p>
-                <div className="task-buttons">
-                  <button id='update' onClick={() => editTaskHandler(task)}>Actualizar Tarea</button>
-                  <button onClick={() => deleteTask(task.id)}>Eliminar</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
 
 export default App;
-
 
 
 

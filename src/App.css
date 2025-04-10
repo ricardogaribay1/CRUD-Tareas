@@ -1,9 +1,19 @@
-/* Estilos básicos para la app */
+
+body {
+  background-color: white;
+  min-height: 100vh;
+  margin: 0; 
+}
+
 .app {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Open Sans', 'Helvetica Neue', sans-serif;
   margin: 0;
-  padding: 0;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 430px;
 }
 
 h1 {
@@ -11,15 +21,12 @@ h1 {
   margin: 0;
 }
 
-/* Contenedor principal */
 .container {
-  gap: 200px;
   display: flex;
   justify-content: space-between;
   margin: 20px;
 }
 
-/* Estilo para la columna izquierda */
 .left-column {
   width: 45%;
   padding: 20px;
@@ -29,18 +36,17 @@ h1 {
 .task-input input,
 .task-input textarea,
 .filter-input input {
-  width: 100%;
+  width: 95%;
   margin: 10px 0;
   padding: 10px;
   font-size: 16px;
   border-radius: 10px;
 }
 
-/* Separación uniforme entre botones */
 button {
   width: 100%;
   padding: 10px;
-  margin-top: 10px; /* Unifica la separación entre botones */
+  margin-top: 10px; 
   border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
@@ -50,46 +56,44 @@ button:hover {
   opacity: 0.8;
 }
 
-/* Estilo para los botones */
 .task-input button {
-  background-color: #81c9a2; /* Verde menta más fuerte */
+  background-color: #81c9a2; 
   color: white;
   border: none;
   width: 106%;
 }
 
 #editing {
-  background-color: #8fa9df; /* Azul más vivo */
+  background-color: #d33232; 
   border: none;
 }
 
 .full-width-button {
-  background-color: #80b7ed; /* Azul más fuerte y vivo */
+  background-color: #80b7ed; 
   color: white;
   width: 106%;
 }
 
 .full-width-button:hover {
-  background-color: #6f99e3; /* Azul más oscuro para hover */
+  background-color: #6f99e3; 
 }
 
 /* Botones de "Estatus", "Categoría", "Prioridad" */
 .select-input select {
-  width: 106%;
+  width: 100%;
   padding: 10px;
   font-size: 16px;
   margin-top: 10px;
   border-radius: 10px;
-  background-color: #8fa9df; /* Azul más fuerte */
+  background-color: #8fa9df; 
   color: white;
   border: none;
 }
 
 .select-input select:hover {
-  background-color: #7793c7; /* Azul un poco más oscuro al hacer hover */
+  background-color: #7793c7; 
 }
 
-/* Estilo para la columna derecha */
 .right-column {
   width: 45%;
   padding: 20px;
@@ -120,7 +124,7 @@ button:hover {
 }
 
 .task-item button {
-  background-color: #8fa9df; /* Azul más fuerte */
+  background-color: #8fa9df; 
   color: white;
   padding: 5px 10px;
   border: none;
@@ -129,11 +133,11 @@ button:hover {
 }
 
 #update {
-  background-color: #81c9a2; /* Verde menta más fuerte */
+  background-color: #81c9a2; 
 }
 
 .task-item button:hover {
-  background-color: #7793c7; /* Azul más oscuro al hacer hover */
+  background-color: #d33232; 
 }
 
 .task-item button:nth-child(1) {
@@ -150,24 +154,50 @@ button:hover {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
-  background-color: white; /* Fondo blanco para mayor claridad */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar */
-  border-radius: 8px; /* Bordes redondeados */
-  /*overflow: hidden;  Evita que el contenido se desborde */
+  z-index: 1000; 
+  background-color: white; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
-/* App.css */
-body {
-  background: linear-gradient(to right, #a0b5eb, #c9f0e4); /* Degradado de azul claro a verde menta */
-  min-height: 100vh; /* Asegura que ocupe toda la pantalla */
-  margin: 0; /* Elimina márgenes por defecto */
-}
-
-.app {
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  padding-bottom: 430px;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 300px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+  margin-top: 10px;
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }

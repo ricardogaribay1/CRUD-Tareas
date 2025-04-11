@@ -40,6 +40,7 @@ h1 {
   padding: 10px;
   font-size: 16px;
   border-radius: 10px;
+  text-align: center;
 }
 
 button {
@@ -177,6 +178,7 @@ button:hover {
   border-radius: 20px;
   width: 300px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .close-button {
@@ -199,4 +201,5 @@ select {
   border-radius: 10px;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  text-align: center;
 }

@@ -60,7 +60,7 @@ button:hover {
   background-color: #81c9a2; 
   color: white;
   border: none;
-  width: 106%;
+  width: 100%;
 }
 
 #editing {
@@ -71,7 +71,7 @@ button:hover {
 .full-width-button {
   background-color: #80b7ed; 
   color: white;
-  width: 106%;
+  width: 100%;
 }
 
 .full-width-button:hover {

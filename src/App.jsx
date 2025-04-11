@@ -149,7 +149,7 @@ function App() {
     setIsFilterActive(false); // Desactiva el filtro
   };
 
-  // Maneja el cambio de rango de fechas
+  // Maneja el cambio de rango de fechas y cierra el filtro de rango de fechas
   const handleDateChange = (ranges) => {
     const { selection } = ranges;
     setDateRange({
@@ -157,6 +157,7 @@ function App() {
       endDate: selection.endDate,
     });
     setIsFilterActive(true); // Activa el filtro
+    setShowDateFilter(false); // Cierra el filtro de rango de fechas automáticamente
   };
 
   // Renderiza las opciones del filtro según la opción de ordenamiento seleccionada

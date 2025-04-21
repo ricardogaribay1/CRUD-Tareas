@@ -38,15 +38,16 @@ h1 {
 }
 
 .left-column {
-  width: 40%; /* Modificado: La columna izquierda ocupa el 25% del ancho */
-  padding: 20px;
+  width: 35%;
   box-sizing: border-box;
+  padding: 20px;
   height: 100%;
 }
 
 .right-column {
   box-sizing: border-box;
-  width: 60%; /* La columna derecha ocupa el 75% del ancho */
+  width: 65%; 
+  padding: 20px;
   height: 100%; 
 }
 

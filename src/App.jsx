@@ -199,10 +199,10 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Lista de Tareas</h1>
 
       <div className="container">
         <div className="left-column">
+          <h1>Lista de Tareas</h1>
           <button className="full-width-button" onClick={() => setShowModal(true)}>
             ➕ Agregar Tarea
           </button>

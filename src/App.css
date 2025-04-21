@@ -38,7 +38,7 @@ h1 {
 }
 
 .left-column {
-  width: 35%;
+  width: 37%;
   box-sizing: border-box;
   padding: 0 20px 20px 20px;
   height: 100%;
@@ -46,7 +46,7 @@ h1 {
 
 .right-column {
   box-sizing: border-box;
-  width: 65%; 
+  width: 63%; 
   padding: 0 20px 20px 20px;
   height: 100%; 
 }

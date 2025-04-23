@@ -5,6 +5,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { DateRangePicker } from 'react-date-range';
 
+
 function App() {
   // Estado inicial para las tareas, cargadas desde localStorage
   const [tasks, setTasks] = useState(() => {
@@ -93,7 +94,7 @@ function App() {
       return [...tasks].sort((a, b) => a.category.localeCompare(b.category));
     }
     if (sortOption === 'Prioridad') {
-      const priorityOrder = { 'Alta': 1, 'Media': 2, 'Baja': 3 };
+      const priorityOrder = { '🔴 p1': 1, '🟡 p2': 2, '🟢 p2': 3 };
       return [...tasks].sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
     }
     return tasks; // Por defecto, en el orden en que fueron agregadas
@@ -167,9 +168,9 @@ function App() {
     if (sortOption === 'Prioridad') {
       return (
         <div className="filter-options">
-          <button onClick={() => handleFilterOptionChange('Alta')}>Alta</button>
-          <button onClick={() => handleFilterOptionChange('Media')}>Media</button>
-          <button onClick={() => handleFilterOptionChange('Baja')}>Baja</button>
+          <button onClick={() => handleFilterOptionChange('🔴 p1')}>🔴 p1</button>
+          <button onClick={() => handleFilterOptionChange('🟡 p2')}>🟡 p2</button>
+          <button onClick={() => handleFilterOptionChange('🟢 p3')}>🟢 p3</button>
         </div>
       );
     }
@@ -188,7 +189,7 @@ function App() {
       return (
         <div className="filter-options">
           <button onClick={() => handleFilterOptionChange('Trabajo')}>Trabajo</button>
-          <button onClick={() => handleFilterOptionChange('Personal')}>Personal</button>
+          <button onClick={() => handleFilterOptionChange(' 🧍‍♂️  Personal')}> 🧍‍♂️  Personal</button>
           <button onClick={() => handleFilterOptionChange('Estudio')}>Estudio</button>
         </div>
       );
@@ -202,7 +203,7 @@ function App() {
 
       <div className="container">
         <div className="left-column">
-          <h1>Lista de Tareas</h1>
+          <h3>Tareas</h3>
           <button className="full-width-button" onClick={() => setShowModal(true)}>
             ➕ Agregar Tarea
           </button>
@@ -212,7 +213,8 @@ function App() {
               type="text"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              placeholder="🔍 Buscar"
+              placeholder="  🔍 Buscar" 
+              FiltroIcon width="24" height="24"
             />
           </div>
 
@@ -266,8 +268,8 @@ function App() {
                 <p><strong>Categoría:</strong> {task.category}</p>
                 <p><strong>Prioridad:</strong> {task.priority}</p>
                 <div className="task-buttons">
-                  <button id='update' onClick={() => editTaskHandler(task)}>Actualizar Tarea</button>
-                  <button onClick={() => deleteTask(task.id)}>Eliminar</button>
+                  <button id='update' onClick={() => editTaskHandler(task)}>✏️</button>
+                  <button onClick={() => deleteTask(task.id)}>🗑️</button>
                 </div>
               </li>
             ))}
@@ -275,57 +277,91 @@ function App() {
         </div>
       </div>
       {showModal && (
-        <Modal>
-          <h2>{isEditing ? 'Editar Tarea' : 'Agregar Tarea'}</h2>
-          <input
-            type="text"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            placeholder="Nombre Tarea"
-            required
-          />
-          <input
-            type="date"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
-            required
-          />
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Descripción de la tarea"
-            required
-          />
-          <div className="select-input">
-            <select value={status} onChange={(e) => setStatus(e.target.value)} required>
-              <option value="">Selecciona Estatus</option>
-              <option value="Pendiente">Pendiente</option>
-              <option value="En Progreso">En Progreso</option>
-              <option value="Completada">Completada</option>
-            </select>
-          </div>
-          <div className="select-input">
-            <select value={category} onChange={(e) => setCategory(e.target.value)} required>
-              <option value="">Selecciona Categoría</option>
-              <option value="Trabajo">Trabajo</option>
-              <option value="Personal">Personal</option>
-              <option value="Estudio">Estudio</option>
-            </select>
-          </div>
-          <div className="select-input">
-            <select value={priority} onChange={(e) => setPriority(e.target.value)} required>
-              <option value="">Selecciona Prioridad</option>
-              <option value="Alta">Alta</option>
-              <option value="Media">Media</option>
-              <option value="Baja">Baja</option>
-            </select>
-          </div>
-          <button onClick={addOrUpdateTask}>
-            {isEditing ? 'Actualizar Tarea' : 'Agregar Tarea'}
-          </button>
-          <button className="close-button" onClick={() => setShowModal(false)}>Cerrar</button>
-        </Modal>
-      )}
+  <Modal>
+    <input
+      type="text"
+      value={newTask}
+      onChange={(e) => setNewTask(e.target.value)}
+      placeholder="Nombre Tarea"
+      required
+    />
+    {/* Botón para abrir el calendario */}
+    <button
+      className="date-button"
+      onClick={() => setShowDateFilter(!showDateFilter)} // Alterna la visibilidad del calendario
+    >
+      📆
+    </button>
+    {/* Calendario para seleccionar la fecha */}
+    {showDateFilter && (
+      <div className="date-picker-container">
+        <DateRangePicker
+          ranges={[{
+            startDate: dateRange.startDate || new Date(),
+            endDate: dateRange.endDate || new Date(),
+            key: 'selection',
+          }]}
+          onChange={(ranges) => {
+            const { selection } = ranges;
+            setDueDate(selection.startDate.toISOString().split('T')[0]); // Asigna la fecha seleccionada
+            setShowDateFilter(false); // Cierra el calendario después de seleccionar
+          }}
+          months={1}
+          direction="horizontal"
+          className="date-picker"
+        />
+      </div>
+    )}
+    <textarea
+      value={description}
+      onChange={(e) => setDescription(e.target.value)}
+      placeholder="Descripción"
+      required
+    />
+    <div className="select-input">
+      <select value={status} onChange={(e) => setStatus(e.target.value)} required>
+        <option value="">Estatus</option>
+        <option value="Pendiente">Pendiente</option>
+        <option value="En Progreso">En Progreso</option>
+        <option value="Completada">Completada</option>
+      </select>
+    </div>
+    <div className="select-input">
+      <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+        <option value=""> 📚 Categoría</option>
+        <option value="Trabajo"> 💼 Trabajo</option>
+        <option value=" 🧍‍♂️  Personal"> 🧍‍♂️  Personal</option>
+        <option value="Estudio"> 📖 Estudio</option>
+      </select>
+    </div>
+    <div className="select-input">
+      <select value={priority} onChange={(e) => setPriority(e.target.value)} required>
+        <option value=""> ◯ Prioridad</option>
+        <option value="🔴 p1">🔴 p1</option>
+        <option value="🟡 p2">🟡 p2</option>
+        <option value="🟢 p3">🟢 p3</option>
+      </select>
+    </div>
+    <button onClick={addOrUpdateTask}>
+      {isEditing ? 'Guardar' : 'Agregar Tarea'}
+    </button>
+    <button
+      className="close-button"
+      onClick={() => {
+        setNewTask(''); 
+        setDescription(''); 
+        setDueDate(''); 
+        setStatus(''); 
+        setCategory(''); 
+        setPriority(''); 
+        setIsEditing(null);
+        setShowModal(false); 
+      }}
+    >
+      Cancelar
+    </button>
+  </Modal>
+)}
     </div>
   );
 }

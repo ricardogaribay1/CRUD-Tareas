@@ -1,4 +1,3 @@
-// Modal.jsx
 import ReactDOM from 'react-dom';
 
 function Modal({ children }) {

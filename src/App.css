@@ -59,7 +59,7 @@ h1 {
 .task-input input,
 .task-input textarea,
 .filter-input input {
-  width: 100%;
+  width: 50%;
   margin: 10px 0;
   padding: 10px;
   font-size: 16px;
@@ -68,7 +68,6 @@ h1 {
 }
 
 button {
-  width: 100%;
   border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
@@ -94,13 +93,12 @@ button:hover {
 }
 
 /* Botones de "Estatus", "Categoría", "Prioridad" */
+
 .select-input select {
-  width: 100%;
   padding: 10px;
   font-size: 16px;
   margin-top: 10px;
   border-radius: 10px;
-  border: none;
 }
 
 .select-input select:hover {
@@ -211,4 +209,51 @@ select {
 .task-buttons button {
   width: auto;
   flex-shrink: 0; 
+}
+
+/* Contenedor para alinear los select inputs en una línea */
+.inline-selects {
+  display: flex; /* Alinea los elementos hijos en una fila */
+  gap: 10px; /* Espaciado entre los select inputs */
+  justify-content: space-between; /* Distribuye los elementos uniformemente */
+  align-items: center; /* Alinea los elementos verticalmente */
+  margin-top: 10px; /* Espaciado superior */
+}
+
+/* Estilo para cada select input */
+.select-input select {
+  flex: 1; /* Asegura que los select inputs tengan el mismo tamaño */
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Opcional: Cambiar el color de fondo al pasar el mouse */
+.select-input select:hover {
+  background-color: #f0f0f0;
+}
+
+/* Contenedor para el título y los valores en una sola línea */
+.task-header {
+  display: flex; /* Alinea los elementos en una fila */
+  gap: 15px; /* Espaciado entre los elementos */
+  align-items: center; /* Alinea los elementos verticalmente */
+  font-size: 14px; /* Tamaño de fuente para los valores */
+  margin-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo para los valores (span) */
+.task-header span {
+  color: #555; /* Color de texto */
+  font-weight: normal; /* Peso de fuente normal */
+}
+
+/* Estilo para el título (h3) */
+.task-header h3 {
+  margin: 0; /* Elimina el margen por defecto */
+  font-size: 16px; /* Tamaño de fuente del título */
+  font-weight: bold; /* Título en negrita */
+  color: #333; /* Color del título */
 }

@@ -105,8 +105,8 @@ function App() {
     tasks.filter((task) => {
       const matchesFilterOption = filterOption
         ? (sortOption === 'Prioridad' && task.priority === filterOption) ||
-          (sortOption === 'Estatus' && task.status === filterOption) ||
-          (sortOption === 'Categoría' && task.category === filterOption)
+        (sortOption === 'Estatus' && task.status === filterOption) ||
+        (sortOption === 'Categoría' && task.category === filterOption)
         : true;
 
       const matchesDateRange = dateRange.startDate && dateRange.endDate
@@ -213,7 +213,7 @@ function App() {
               type="text"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              placeholder="  🔍 Buscar" 
+              placeholder="  🔍 Buscar"
               FiltroIcon width="24" height="24"
             />
           </div>
@@ -261,14 +261,20 @@ function App() {
           <ul>
             {filteredAndSortedTasks.map((task) => (
               <li key={task.id} className="task-item">
-                <h3>{task.text}</h3>
-                <p><strong>Fecha Limite:</strong> {task.dueDate}</p>
-                <p><strong>Descripción:</strong> {task.description}</p>
-                <p><strong>Estatus:</strong> {task.status}</p>
-                <p><strong>Categoría:</strong> {task.category}</p>
-                <p><strong>Prioridad:</strong> {task.priority}</p>
+                <div className="task-header">
+                  <h3>
+                    {task.text} &nbsp; {/* Espacio entre elementos */}
+                    {task.dueDate} &nbsp;
+                    {task.status} &nbsp;
+                    {task.category} &nbsp;
+                    {task.priority}
+                  </h3>
+                </div>
+                {/* Descripción de la tarea */}
+                <p>{task.description}</p>
+                {/* Botones de acción */}
                 <div className="task-buttons">
-                  <button id='update' onClick={() => editTaskHandler(task)}>✏️</button>
+                  <button id="update" onClick={() => editTaskHandler(task)}>✏️</button>
                   <button onClick={() => deleteTask(task.id)}>🗑️</button>
                 </div>
               </li>
@@ -277,91 +283,95 @@ function App() {
         </div>
       </div>
       {showModal && (
-  <Modal>
-    <input
-      type="text"
-      value={newTask}
-      onChange={(e) => setNewTask(e.target.value)}
-      placeholder="Nombre Tarea"
-      required
-    />
-    {/* Botón para abrir el calendario */}
-    <button
-      className="date-button"
-      onClick={() => setShowDateFilter(!showDateFilter)} // Alterna la visibilidad del calendario
-    >
-      📆
-    </button>
-    {/* Calendario para seleccionar la fecha */}
-    {showDateFilter && (
-      <div className="date-picker-container">
-        <DateRangePicker
-          ranges={[{
-            startDate: dateRange.startDate || new Date(),
-            endDate: dateRange.endDate || new Date(),
-            key: 'selection',
-          }]}
-          onChange={(ranges) => {
-            const { selection } = ranges;
-            setDueDate(selection.startDate.toISOString().split('T')[0]); // Asigna la fecha seleccionada
-            setShowDateFilter(false); // Cierra el calendario después de seleccionar
-          }}
-          months={1}
-          direction="horizontal"
-          className="date-picker"
-        />
-      </div>
-    )}
-    <textarea
-      value={description}
-      onChange={(e) => setDescription(e.target.value)}
-      placeholder="Descripción"
-      required
-    />
-    <div className="select-input">
-      <select value={status} onChange={(e) => setStatus(e.target.value)} required>
-        <option value="">Estatus</option>
-        <option value="Pendiente">Pendiente</option>
-        <option value="En Progreso">En Progreso</option>
-        <option value="Completada">Completada</option>
-      </select>
-    </div>
-    <div className="select-input">
-      <select value={category} onChange={(e) => setCategory(e.target.value)} required>
-        <option value=""> 📚 Categoría</option>
-        <option value="Trabajo"> 💼 Trabajo</option>
-        <option value=" 🧍‍♂️  Personal"> 🧍‍♂️  Personal</option>
-        <option value="Estudio"> 📖 Estudio</option>
-      </select>
-    </div>
-    <div className="select-input">
-      <select value={priority} onChange={(e) => setPriority(e.target.value)} required>
-        <option value=""> ◯ Prioridad</option>
-        <option value="🔴 p1">🔴 p1</option>
-        <option value="🟡 p2">🟡 p2</option>
-        <option value="🟢 p3">🟢 p3</option>
-      </select>
-    </div>
-    <button onClick={addOrUpdateTask}>
-      {isEditing ? 'Guardar' : 'Agregar Tarea'}
-    </button>
-    <button
-      className="close-button"
-      onClick={() => {
-        setNewTask(''); 
-        setDescription(''); 
-        setDueDate(''); 
-        setStatus(''); 
-        setCategory(''); 
-        setPriority(''); 
-        setIsEditing(null);
-        setShowModal(false); 
-      }}
-    >
-      Cancelar
-    </button>
-  </Modal>
-)}
+        <Modal>
+          <input
+            type="text"
+            value={newTask}
+            onChange={(e) => setNewTask(e.target.value)}
+            placeholder="Nombre Tarea"
+            required
+          />
+
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Descripción"
+            required
+          />
+
+          <div className="inline-selects">
+            {/* Botón para abrir el calendario */}
+            <button
+              className="date-button"
+              onClick={() => setShowDateFilter(!showDateFilter)} // Alterna la visibilidad del calendario
+            >
+              📆
+            </button>
+            {/* Calendario para seleccionar la fecha */}
+            {showDateFilter && (
+              <div className="date-picker-container">
+                <DateRangePicker
+                  ranges={[{
+                    startDate: dateRange.startDate || new Date(),
+                    endDate: dateRange.endDate || new Date(),
+                    key: 'selection',
+                  }]}
+                  onChange={(ranges) => {
+                    const { selection } = ranges;
+                    setDueDate(selection.startDate.toISOString().split('T')[0]); // Asigna la fecha seleccionada
+                    setShowDateFilter(false); // Cierra el calendario después de seleccionar
+                  }}
+                  months={1}
+                  direction="horizontal"
+                  className="date-picker"
+                />
+              </div>
+            )}
+            <div className="select-input">
+              <select value={status} onChange={(e) => setStatus(e.target.value)} required>
+                <option value="">Estatus</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="En Progreso">En Progreso</option>
+                <option value="Completada">Completada</option>
+              </select>
+            </div>
+            <div className="select-input">
+              <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+                <option value=""> 📚 Categoría</option>
+                <option value="Trabajo"> 💼 Trabajo</option>
+                <option value=" 🧍‍♂️  Personal"> 🧍‍♂️  Personal</option>
+                <option value="Estudio"> 📖 Estudio</option>
+              </select>
+            </div>
+            <div className="select-input">
+              <select value={priority} onChange={(e) => setPriority(e.target.value)} required>
+                <option value=""> ◯ Prioridad</option>
+                <option value="🔴 p1">🔴 p1</option>
+                <option value="🟡 p2">🟡 p2</option>
+                <option value="🟢 p3">🟢 p3</option>
+              </select>
+            </div>
+          </div>
+          <button onClick={addOrUpdateTask}>
+            {isEditing ? 'Guardar' : 'Agregar Tarea'}
+          </button>
+          <button
+            className="close-button"
+            onClick={() => {
+              setNewTask('');
+              setDescription('');
+              setDueDate('');
+              setStatus('');
+              setCategory('');
+              setPriority('');
+              setIsEditing(null);
+              setShowModal(false);
+            }}
+          >
+            Cancelar
+          </button>
+        </Modal>
+      )}
     </div>
   );
 }

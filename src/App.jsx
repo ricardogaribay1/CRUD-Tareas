@@ -30,6 +30,16 @@ function App() {
   const [showDateFilter, setShowDateFilter] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
+  const formatDateToMonthDay = (dateStr) => {
+    const date = new Date(dateStr);
+    const options = { month: 'long', day: 'numeric' };
+    const [day, month] = date.toLocaleDateString('es-ES', options).split(' de ');
+    return `${capitalize(month)} ${day}`;
+  };
+  
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+  
+
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
@@ -99,31 +109,31 @@ function App() {
     const endStr = end.toISOString().split('T')[0];
     return taskDate >= startStr && taskDate <= endStr;
   };
-  
-  
+
+
   const filteredAndSortedTasks = sortTasks(
     tasks.filter((task) => {
       const matchesFilterOption = filterOption
         ? (sortOption === 'Prioridad' && task.priority === filterOption) ||
-          (sortOption === 'Estatus' && task.status === filterOption) ||
-          (sortOption === 'Categoría' && task.category === filterOption)
+        (sortOption === 'Estatus' && task.status === filterOption) ||
+        (sortOption === 'Categoría' && task.category === filterOption)
         : true;
-  
+
       const matchesDateRange = dateRange.startDate && dateRange.endDate
         ? isSameOrBetween(task.dueDate, dateRange.startDate, dateRange.endDate)
         : true;
-  
+
       const matchesSearch = task.text.toLowerCase().includes(filter.toLowerCase()) ||
         task.dueDate.includes(filter.toLowerCase()) ||
         task.status.toLowerCase().includes(filter.toLowerCase()) ||
         task.category.toLowerCase().includes(filter.toLowerCase()) ||
         task.priority.toLowerCase().includes(filter.toLowerCase()) ||
         task.description.toLowerCase().includes(filter.toLowerCase());
-  
+
       return matchesFilterOption && matchesDateRange && matchesSearch;
     })
   );
-  
+
 
   const toggleSortMenu = () => {
     setIsSortMenuOpen(!isSortMenuOpen);
@@ -209,6 +219,9 @@ function App() {
             />
           </div>
 
+
+          
+
           <div className="sort-dropdown">
             <button className="full-width-button" onClick={isFilterActive ? cancelFilter : toggleSortMenu}>
               {isFilterActive ? 'Cancelar filtro' : '☰ Ordenar por'}
@@ -226,35 +239,35 @@ function App() {
 
 
 
-{showDateFilter && (
-  <div className="date-picker-container">
-    {isMobile ? (
-      <Calendar
-        date={dateRange.startDate || new Date()}
-        onChange={(date) => {
-          setDateRange({ startDate: date, endDate: date });
-          setIsFilterActive(true);
-          setShowDateFilter(false);
-        }}
-        months={1}
-        direction="horizontal"
-        className="date-picker"
-      />
-    ) : (
-      <DateRangePicker
-        ranges={[{
-          startDate: dateRange.startDate || new Date(),
-          endDate: dateRange.endDate || new Date(),
-          key: 'selection',
-        }]}
-        onChange={handleDateChange}
-        months={1}
-        direction="horizontal"
-        className="date-picker"
-      />
-    )}
-  </div>
-)}
+          {showDateFilter && (
+            <div className="date-picker-container">
+              {isMobile ? (
+                <Calendar
+                  date={dateRange.startDate || new Date()}
+                  onChange={(date) => {
+                    setDateRange({ startDate: date, endDate: date });
+                    setIsFilterActive(true);
+                    setShowDateFilter(false);
+                  }}
+                  months={1}
+                  direction="horizontal"
+                  className="date-picker"
+                />
+              ) : (
+                <DateRangePicker
+                  ranges={[{
+                    startDate: dateRange.startDate || new Date(),
+                    endDate: dateRange.endDate || new Date(),
+                    key: 'selection',
+                  }]}
+                  onChange={handleDateChange}
+                  months={1}
+                  direction="horizontal"
+                  className="date-picker"
+                />
+              )}
+            </div>
+          )}
 
 
           {renderFilterOptions()}
@@ -269,10 +282,10 @@ function App() {
                   <h3>
                     {task.priority}&nbsp;
                     {task.text} &nbsp;
-                    {task.dueDate} &nbsp;
                   </h3>
                 </div>
                 <p>{task.description}</p>
+                <p className="due-date">{formatDateToMonthDay(task.dueDate)}</p>
                 <div className="task-buttons">
                   <button id="update" onClick={() => editTaskHandler(task)}>✏️</button>
                   <button onClick={() => deleteTask(task.id)}>🗑️</button>

@@ -156,7 +156,7 @@ button:hover {
 
 .date-picker-overlay {
     position: fixed; /* flota sobre el modal */
-    top: 50%;
+    top: 500px;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2000;

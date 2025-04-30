@@ -239,11 +239,9 @@ function App() {
               <li key={task.id} className="task-item">
                 <div className="task-header">
                   <h3>
+                    {task.priority}&nbsp;
                     {task.text} &nbsp;
                     {task.dueDate} &nbsp;
-                    {task.status} &nbsp;
-                    {task.category} &nbsp;
-                    {task.priority}
                   </h3>
                 </div>
                 <p>{task.description}</p>

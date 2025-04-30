@@ -267,12 +267,12 @@ function App() {
               <li key={task.id} className="task-item">
                 <div className="task-header">
                   <h3>
-                    {task.priority}&nbsp;
-                    {task.text} &nbsp;
-                    {task.dueDate} &nbsp;
+                  {task.priority.split(' ')[0]}&nbsp;
+                  {task.text}
                   </h3>
                 </div>
                 <p>{task.description}</p>
+                <p>{task.dueDate}</p>
                 <div className="task-buttons">
                   <button id="update" onClick={() => editTaskHandler(task)}>✏️</button>
                   <button onClick={() => deleteTask(task.id)}>🗑️</button>

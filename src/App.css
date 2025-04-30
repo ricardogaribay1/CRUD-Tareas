@@ -163,9 +163,8 @@ button:hover {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    padding: 10px;
-    width: 90vw;     /* se adapta al ancho del celular */
-    max-width: 400px; /* no se hace más grande que esto */
+    width: 70vw;     /* se adapta al ancho del celular */
+    max-width: 350px; /* no se hace más grande que esto */
   }
   
   .dropdown-options {

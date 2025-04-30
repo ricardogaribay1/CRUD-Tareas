@@ -55,7 +55,6 @@ h1 {
   height: 100%; 
 }
 
-
 .task-input input,
 .task-input textarea,
 .filter-input input {
@@ -64,7 +63,6 @@ h1 {
   padding: 10px;
   font-size: 16px;
   border-radius: 10px;
-  /* text-align: center; */
 }
 
 button {
@@ -91,8 +89,6 @@ button:hover {
 .full-width-button:hover {
   background-color: #6f99e3; 
 }
-
-/* Botones de "Estatus", "Categoría", "Prioridad" */
 
 .select-input select {
   padding: 10px;
@@ -158,9 +154,19 @@ button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
+.date-picker-overlay {
+  position: absolute;
+  top: 500px;
+  z-index: 2000;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  padding: 10px;
+}
+
 .modal {
   position: fixed;
-  top: 0;
+  bottom: 200px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -175,7 +181,7 @@ button:hover {
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  /* text-align: center; */
+  max-width: 600px;
 }
 
 .close-button {
@@ -211,18 +217,16 @@ select {
   flex-shrink: 0; 
 }
 
-/* Contenedor para alinear los select inputs en una línea */
 .inline-selects {
-  display: flex; /* Alinea los elementos hijos en una fila */
-  gap: 10px; /* Espaciado entre los select inputs */
-  justify-content: space-between; /* Distribuye los elementos uniformemente */
-  align-items: center; /* Alinea los elementos verticalmente */
-  margin-top: 10px; /* Espaciado superior */
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
 }
 
-/* Estilo para cada select input */
 .select-input select {
-  flex: 1; /* Asegura que los select inputs tengan el mismo tamaño */
+  flex: 1;
   padding: 10px;
   font-size: 14px;
   border-radius: 5px;
@@ -230,30 +234,85 @@ select {
   box-sizing: border-box;
 }
 
-/* Opcional: Cambiar el color de fondo al pasar el mouse */
 .select-input select:hover {
   background-color: #f0f0f0;
 }
 
-/* Contenedor para el título y los valores en una sola línea */
 .task-header {
-  display: flex; /* Alinea los elementos en una fila */
-  gap: 15px; /* Espaciado entre los elementos */
-  align-items: center; /* Alinea los elementos verticalmente */
-  font-size: 14px; /* Tamaño de fuente para los valores */
-  margin-bottom: 10px; /* Espaciado inferior */
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
-/* Estilo para los valores (span) */
 .task-header span {
-  color: #555; /* Color de texto */
-  font-weight: normal; /* Peso de fuente normal */
+  color: #555;
+  font-weight: normal;
 }
 
-/* Estilo para el título (h3) */
 .task-header h3 {
-  margin: 0; /* Elimina el margen por defecto */
-  font-size: 16px; /* Tamaño de fuente del título */
-  font-weight: bold; /* Título en negrita */
-  color: #333; /* Color del título */
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
 }
+
+/*Móviles */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    margin: 10px;
+  }
+
+  .left-column,
+  .right-column {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .inline-selects {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .task-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .task-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-options button {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .modal-content {
+    width: 95%;
+    max-width: 400px;
+  }
+
+  .date-picker-overlay {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+  }
+}
+

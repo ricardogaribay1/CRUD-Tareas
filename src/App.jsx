@@ -4,16 +4,14 @@ import Modal from './Modal';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { DateRangePicker } from 'react-date-range';
-
+import { Calendar } from 'react-date-range';
 
 function App() {
-  // Estado inicial para las tareas, cargadas desde localStorage
   const [tasks, setTasks] = useState(() => {
     const storedTasks = localStorage.getItem('tasks');
     return storedTasks ? JSON.parse(storedTasks) : [];
   });
 
-  // Estados para manejar los datos de las tareas y la interfaz
   const [newTask, setNewTask] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -21,21 +19,20 @@ function App() {
   const [category, setCategory] = useState('');
   const [priority, setPriority] = useState('');
   const [filter, setFilter] = useState('');
-  const [filterOption, setFilterOption] = useState(''); // Opción específica del filtro
+  const [filterOption, setFilterOption] = useState('');
   const [isEditing, setIsEditing] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [sortOption, setSortOption] = useState(''); // Opción de ordenamiento seleccionada
-  const [isSortMenuOpen, setIsSortMenuOpen] = useState(false); // Controla si el menú de orden está abierto
-  const [isFilterActive, setIsFilterActive] = useState(false); // Indica si un filtro está activo
-  const [dateRange, setDateRange] = useState({ startDate: null, endDate: null }); // Estado para el rango de fechas
-  const [showDateFilter, setShowDateFilter] = useState(false); // Controla la visibilidad del filtro de rango de fechas
+  const [sortOption, setSortOption] = useState('');
+  const [isSortMenuOpen, setIsSortMenuOpen] = useState(false);
+  const [isFilterActive, setIsFilterActive] = useState(false);
+  const [dateRange, setDateRange] = useState({ startDate: null, endDate: null });
+  const [showDateFilter, setShowDateFilter] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  // Guarda las tareas en localStorage cada vez que cambian
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  // Agrega una nueva tarea o actualiza una existente
   const addOrUpdateTask = () => {
     if (!newTask.trim() || !description.trim() || !dueDate.trim() || !status || !category || !priority) {
       alert("Por favor, completa todos los campos.");
@@ -43,17 +40,14 @@ function App() {
     }
 
     if (isEditing) {
-      // Actualiza una tarea existente
       setTasks(tasks.map(task =>
         task.id === isEditing ? { ...task, text: newTask, description, dueDate, status, category, priority } : task
       ));
       setIsEditing(null);
     } else {
-      // Agrega una nueva tarea
       setTasks([...tasks, { id: Date.now(), text: newTask, description, dueDate, status, category, priority }]);
     }
 
-    // Reinicia los campos del formulario
     setNewTask('');
     setDescription('');
     setDueDate('');
@@ -63,13 +57,11 @@ function App() {
     setShowModal(false);
   };
 
-  // Elimina una tarea por su ID
   const deleteTask = (id) => {
     const updatedTasks = tasks.filter(task => task.id !== id);
     setTasks(updatedTasks);
   };
 
-  // Carga los datos de una tarea en el formulario para editarla
   const editTaskHandler = (task) => {
     setNewTask(task.text);
     setDescription(task.description);
@@ -81,7 +73,6 @@ function App() {
     setShowModal(true);
   };
 
-  // Ordena las tareas según la opción seleccionada
   const sortTasks = (tasks) => {
     if (sortOption === 'Fecha límite') {
       return [...tasks].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
@@ -94,19 +85,18 @@ function App() {
       return [...tasks].sort((a, b) => a.category.localeCompare(b.category));
     }
     if (sortOption === 'Prioridad') {
-      const priorityOrder = { '🔴 p1': 1, '🟡 p2': 2, '🟢 p2': 3 };
+      const priorityOrder = { '🔴 p1': 1, '🟡 p2': 2, '🟢 p3': 3 };
       return [...tasks].sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
     }
-    return tasks; // Por defecto, en el orden en que fueron agregadas
+    return tasks;
   };
 
-  // Filtra y ordena las tareas según el filtro y la búsqueda
   const filteredAndSortedTasks = sortTasks(
     tasks.filter((task) => {
       const matchesFilterOption = filterOption
         ? (sortOption === 'Prioridad' && task.priority === filterOption) ||
-        (sortOption === 'Estatus' && task.status === filterOption) ||
-        (sortOption === 'Categoría' && task.category === filterOption)
+          (sortOption === 'Estatus' && task.status === filterOption) ||
+          (sortOption === 'Categoría' && task.category === filterOption)
         : true;
 
       const matchesDateRange = dateRange.startDate && dateRange.endDate
@@ -124,46 +114,40 @@ function App() {
     })
   );
 
-  // Alterna la visibilidad del menú de ordenamiento
   const toggleSortMenu = () => {
     setIsSortMenuOpen(!isSortMenuOpen);
   };
 
-  // Cambia la opción de ordenamiento y activa el filtro
   const handleSortOptionChange = (option) => {
-    setSortOption(option); // Actualiza la opción seleccionada
-    setFilterOption(''); // Reinicia el filtro específico
-    setIsFilterActive(true); // Activa el filtro
-    setIsSortMenuOpen(false); // Cierra el menú después de seleccionar una opción
+    setSortOption(option);
+    setFilterOption('');
+    setIsFilterActive(true);
+    setIsSortMenuOpen(false);
   };
 
-  // Cambia la opción específica del filtro
   const handleFilterOptionChange = (option) => {
-    setFilterOption(option); // Actualiza la opción específica seleccionada
+    setFilterOption(option);
   };
 
-  // Cancela el filtro y restablece el estado inicial
   const cancelFilter = () => {
-    setSortOption(''); // Reinicia el filtro
-    setFilterOption(''); // Reinicia la opción específica
-    setDateRange({ startDate: null, endDate: null }); // Reinicia el rango de fechas
-    setIsFilterActive(false); // Desactiva el filtro
+    setSortOption('');
+    setFilterOption('');
+    setDateRange({ startDate: null, endDate: null });
+    setIsFilterActive(false);
   };
 
-  // Maneja el cambio de rango de fechas y cierra el filtro de rango de fechas
   const handleDateChange = (ranges) => {
     const { selection } = ranges;
     setDateRange({
       startDate: selection.startDate,
       endDate: selection.endDate,
     });
-    setIsFilterActive(true); // Activa el filtro
-    setShowDateFilter(false); // Cierra el filtro de rango de fechas automáticamente
+    setIsFilterActive(true);
+    setShowDateFilter(false);
   };
 
-  // Renderiza las opciones del filtro según la opción de ordenamiento seleccionada
   const renderFilterOptions = () => {
-    if (!sortOption || sortOption === 'Fecha límite') return null; // No mostrar opciones si no hay filtro activo o es "Fecha límite"
+    if (!sortOption || sortOption === 'Fecha límite') return null;
 
     if (sortOption === 'Prioridad') {
       return (
@@ -189,7 +173,7 @@ function App() {
       return (
         <div className="filter-options">
           <button onClick={() => handleFilterOptionChange('Trabajo')}>Trabajo</button>
-          <button onClick={() => handleFilterOptionChange(' 🧍‍♂️  Personal')}> 🧍‍♂️  Personal</button>
+          <button onClick={() => handleFilterOptionChange(' 🧍‍♂️  Personal')}>🧍‍♂️ Personal</button>
           <button onClick={() => handleFilterOptionChange('Estudio')}>Estudio</button>
         </div>
       );
@@ -200,29 +184,22 @@ function App() {
 
   return (
     <div className="app">
-
       <div className="container">
         <div className="left-column">
           <h3>Tareas</h3>
-          <button className="full-width-button" onClick={() => setShowModal(true)}>
-            ➕ Agregar Tarea
-          </button>
+          <button className="full-width-button" onClick={() => setShowModal(true)}>➕ Agregar Tarea</button>
 
           <div className="filter-input">
             <input
               type="text"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              placeholder="  🔍 Buscar"
-              FiltroIcon width="24" height="24"
+              placeholder="🔍 Buscar"
             />
           </div>
 
           <div className="sort-dropdown">
-            <button
-              className="full-width-button"
-              onClick={isFilterActive ? cancelFilter : toggleSortMenu} // Alternar entre cancelar filtro y abrir menú
-            >
+            <button className="full-width-button" onClick={isFilterActive ? cancelFilter : toggleSortMenu}>
               {isFilterActive ? 'Cancelar filtro' : '☰ Ordenar por'}
             </button>
             {isSortMenuOpen && (
@@ -252,7 +229,6 @@ function App() {
             </div>
           )}
 
-          {/* Renderizar las opciones del filtro dinámicamente */}
           {renderFilterOptions()}
         </div>
 
@@ -263,16 +239,14 @@ function App() {
               <li key={task.id} className="task-item">
                 <div className="task-header">
                   <h3>
-                    {task.text} &nbsp; {/* Espacio entre elementos */}
+                    {task.text} &nbsp;
                     {task.dueDate} &nbsp;
                     {task.status} &nbsp;
                     {task.category} &nbsp;
                     {task.priority}
                   </h3>
                 </div>
-                {/* Descripción de la tarea */}
                 <p>{task.description}</p>
-                {/* Botones de acción */}
                 <div className="task-buttons">
                   <button id="update" onClick={() => editTaskHandler(task)}>✏️</button>
                   <button onClick={() => deleteTask(task.id)}>🗑️</button>
@@ -282,6 +256,7 @@ function App() {
           </ul>
         </div>
       </div>
+
       {showModal && (
         <Modal>
           <input
@@ -291,35 +266,21 @@ function App() {
             placeholder="Nombre Tarea"
             required
           />
-
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Descripción"
             required
           />
-
           <div className="inline-selects">
-            {/* Botón para abrir el calendario */}
-            <button
-              className="date-button"
-              onClick={() => setShowDateFilter(!showDateFilter)} // Alterna la visibilidad del calendario
-            >
-              📆
-            </button>
-            {/* Calendario para seleccionar la fecha */}
-            {showDateFilter && (
-              <div className="date-picker-container">
-                <DateRangePicker
-                  ranges={[{
-                    startDate: dateRange.startDate || new Date(),
-                    endDate: dateRange.endDate || new Date(),
-                    key: 'selection',
-                  }]}
-                  onChange={(ranges) => {
-                    const { selection } = ranges;
-                    setDueDate(selection.startDate.toISOString().split('T')[0]); // Asigna la fecha seleccionada
-                    setShowDateFilter(false); // Cierra el calendario después de seleccionar
+            <button className="date-button" onClick={() => setShowDatePicker(!showDatePicker)}>📆</button>
+            {showDatePicker && (
+              <div className="date-picker-overlay">
+                <Calendar
+                  date={dueDate ? new Date(dueDate) : new Date()}
+                  onChange={(date) => {
+                    setDueDate(date.toISOString().split('T')[0]);
+                    setShowDatePicker(false);
                   }}
                   months={1}
                   direction="horizontal"
@@ -337,24 +298,22 @@ function App() {
             </div>
             <div className="select-input">
               <select value={category} onChange={(e) => setCategory(e.target.value)} required>
-                <option value=""> 📚 Categoría</option>
-                <option value="Trabajo"> 💼 Trabajo</option>
-                <option value=" 🧍‍♂️  Personal"> 🧍‍♂️  Personal</option>
-                <option value="Estudio"> 📖 Estudio</option>
+                <option value="">📚 Categoría</option>
+                <option value="Trabajo">💼 Trabajo</option>
+                <option value=" 🧍‍♂️  Personal">🧍‍♂️ Personal</option>
+                <option value="Estudio">📖 Estudio</option>
               </select>
             </div>
             <div className="select-input">
               <select value={priority} onChange={(e) => setPriority(e.target.value)} required>
-                <option value=""> ◯ Prioridad</option>
+                <option value="">◯ Prioridad</option>
                 <option value="🔴 p1">🔴 p1</option>
                 <option value="🟡 p2">🟡 p2</option>
                 <option value="🟢 p3">🟢 p3</option>
               </select>
             </div>
           </div>
-          <button onClick={addOrUpdateTask}>
-            {isEditing ? 'Guardar' : 'Agregar Tarea'}
-          </button>
+          <button onClick={addOrUpdateTask}>{isEditing ? 'Guardar' : 'Agregar Tarea'}</button>
           <button
             className="close-button"
             onClick={() => {

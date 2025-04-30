@@ -3,6 +3,7 @@ import './App.css';
 import Modal from './Modal';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
+import { isMobile } from 'react-device-detect';
 import { DateRangePicker } from 'react-date-range';
 import { Calendar } from 'react-date-range';
 
@@ -213,21 +214,38 @@ function App() {
             )}
           </div>
 
-          {showDateFilter && (
-            <div className="date-picker-container">
-              <DateRangePicker
-                ranges={[{
-                  startDate: dateRange.startDate || new Date(),
-                  endDate: dateRange.endDate || new Date(),
-                  key: 'selection',
-                }]}
-                onChange={handleDateChange}
-                months={1}
-                direction="horizontal"
-                className="date-picker"
-              />
-            </div>
-          )}
+
+
+{showDateFilter && (
+  <div className="date-picker-container">
+    {isMobile ? (
+      <Calendar
+        date={dateRange.startDate || new Date()}
+        onChange={(date) => {
+          setDateRange({ startDate: date, endDate: date });
+          setIsFilterActive(true);
+          setShowDateFilter(false);
+        }}
+        months={1}
+        direction="horizontal"
+        className="date-picker"
+      />
+    ) : (
+      <DateRangePicker
+        ranges={[{
+          startDate: dateRange.startDate || new Date(),
+          endDate: dateRange.endDate || new Date(),
+          key: 'selection',
+        }]}
+        onChange={handleDateChange}
+        months={1}
+        direction="horizontal"
+        className="date-picker"
+      />
+    )}
+  </div>
+)}
+
 
           {renderFilterOptions()}
         </div>

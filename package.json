@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "^19.0.0",
     "react-date-range": "^2.0.1",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {

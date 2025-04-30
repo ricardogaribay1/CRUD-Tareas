@@ -168,7 +168,34 @@ button:hover {
     max-width: 400px; /* no se hace más grande que esto */
   }
   
-
+  .dropdown-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-top: 10px;
+    width: 100%; /* o ajústalo a tu diseño */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dropdown-options button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    border: none;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  
+  .dropdown-options button:hover {
+    background-color: #dbe8ff;
+  }
+  
 
 .modal {
   position: fixed;

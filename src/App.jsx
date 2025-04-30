@@ -187,7 +187,7 @@ function App() {
       <div className="container">
         <div className="left-column">
           <h3>Tareas</h3>
-          <button className="full-width-button" onClick={() => setShowModal(true)}>➕ Agregar Tarea</button>
+          <button className="full-width-button" onClick={() => setShowModal(true)}>➕ Añadir Tarea</button>
 
           <div className="filter-input">
             <input
@@ -233,7 +233,7 @@ function App() {
         </div>
 
         <div className="right-column">
-          {tasks.length === 0 && <p>No hay tareas disponibles.</p>}
+          {tasks.length === 0 && <p>No hubo actividad en la última semana.</p>}
           <ul>
             {filteredAndSortedTasks.map((task) => (
               <li key={task.id} className="task-item">
@@ -313,7 +313,7 @@ function App() {
               </select>
             </div>
           </div>
-          <button onClick={addOrUpdateTask}>{isEditing ? 'Guardar' : 'Agregar Tarea'}</button>
+          <button onClick={addOrUpdateTask}>{isEditing ? 'Guardar' : 'Añadir Tarea'}</button>
           <button
             className="close-button"
             onClick={() => {

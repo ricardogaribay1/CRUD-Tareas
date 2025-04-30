@@ -156,13 +156,14 @@ button:hover {
 
 .date-picker-overlay {
     position: fixed; /* flota sobre el modal */
-    top: 500px;
+    top: 400px;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2000;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    height: 20vh; /* ocupa el 90% de la altura de la pantalla */
     width: 70vw;     /* se adapta al ancho del celular */
     max-width: 350px; /* no se hace más grande que esto */
   }

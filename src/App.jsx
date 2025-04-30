@@ -92,6 +92,15 @@ function App() {
     return tasks;
   };
 
+
+  const isSameOrBetween = (taskDateStr, start, end) => {
+    const taskDate = taskDateStr;
+    const startStr = start.toISOString().split('T')[0];
+    const endStr = end.toISOString().split('T')[0];
+    return taskDate >= startStr && taskDate <= endStr;
+  };
+  
+  
   const filteredAndSortedTasks = sortTasks(
     tasks.filter((task) => {
       const matchesFilterOption = filterOption
@@ -99,21 +108,22 @@ function App() {
           (sortOption === 'Estatus' && task.status === filterOption) ||
           (sortOption === 'Categoría' && task.category === filterOption)
         : true;
-
+  
       const matchesDateRange = dateRange.startDate && dateRange.endDate
-        ? new Date(task.dueDate) >= dateRange.startDate && new Date(task.dueDate) <= dateRange.endDate
+        ? isSameOrBetween(task.dueDate, dateRange.startDate, dateRange.endDate)
         : true;
-
+  
       const matchesSearch = task.text.toLowerCase().includes(filter.toLowerCase()) ||
         task.dueDate.includes(filter.toLowerCase()) ||
         task.status.toLowerCase().includes(filter.toLowerCase()) ||
         task.category.toLowerCase().includes(filter.toLowerCase()) ||
         task.priority.toLowerCase().includes(filter.toLowerCase()) ||
         task.description.toLowerCase().includes(filter.toLowerCase());
-
+  
       return matchesFilterOption && matchesDateRange && matchesSearch;
     })
   );
+  
 
   const toggleSortMenu = () => {
     setIsSortMenuOpen(!isSortMenuOpen);

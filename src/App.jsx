@@ -30,16 +30,6 @@ function App() {
   const [showDateFilter, setShowDateFilter] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const formatDateToMonthDay = (dateStr) => {
-    const date = new Date(dateStr);
-    const options = { month: 'long', day: 'numeric' };
-    const [day, month] = date.toLocaleDateString('es-ES', options).split(' de ');
-    return `${capitalize(month)} ${day}`;
-  };
-  
-  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-  
-
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
@@ -219,9 +209,6 @@ function App() {
             />
           </div>
 
-
-          
-
           <div className="sort-dropdown">
             <button className="full-width-button" onClick={isFilterActive ? cancelFilter : toggleSortMenu}>
               {isFilterActive ? 'Cancelar filtro' : '☰ Ordenar por'}
@@ -282,10 +269,10 @@ function App() {
                   <h3>
                     {task.priority}&nbsp;
                     {task.text} &nbsp;
+                    {task.dueDate} &nbsp;
                   </h3>
                 </div>
                 <p>{task.description}</p>
-                <p className="due-date">{formatDateToMonthDay(task.dueDate)}</p>
                 <div className="task-buttons">
                   <button id="update" onClick={() => editTaskHandler(task)}>✏️</button>
                   <button onClick={() => deleteTask(task.id)}>🗑️</button>

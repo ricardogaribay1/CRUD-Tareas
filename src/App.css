@@ -158,6 +158,7 @@ button:hover {
     position: fixed; /* flota sobre el modal */
     top: 400px;
     left: 50%;
+    gap: 10px;
     transform: translate(-50%, -50%);
     z-index: 2000;
     background-color: white;
